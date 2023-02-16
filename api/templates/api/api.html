@@ -1,0 +1,89 @@
+{% load static %}
+<!document html>
+<html lang="en">
+    <head>
+        {% load bootstrap5 %}
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js" integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css" integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
+        
+        <title>Goverla Example</title>
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Угоди за ЄДРПОУ розпорядника</h1>
+            <div class="row">
+                <div class="col">
+                    <a href="http://api.spending.gov.ua/api/swagger-ui.html#/Disposers/getAgreementsUsingGET">Документація</a>
+                    <form method="get" class="was-validated" name="main-form">
+                        <div class="row">
+                            <div class="col">
+                                <label for="startDate">дата "з" (включно)</label>
+                                <input id="startDate" name="startDate"class="form-control" value="{{ request_params.startdate }}" type="date" required/>
+                                <div class="valid-feedback">Valid.</div>
+                                <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+                            <div class="col">
+                                <label for="endDate">дата "по" (включно)</label>
+                                <input id="endDate" name="endDate" class="form-control" value="{{ request_params.enddate }}" type="date" required/>
+                                <div class="valid-feedback">Valid.</div>
+                                <div class="invalid-feedback">Please fill out this field.</div>
+                            </div>
+                            <div class="col">
+                                <div class="row">
+                                    <label for="disposerId">ЄДРПОУ розпорядників</label>
+                                </div>
+                                <div class="row">
+                                    <input id="disposerId" name="disposerId" placeholder="00013480" value="{{ request_params.disposerid }}" type="text" required/>
+                                    <div class="valid-feedback">Valid.</div>
+                                    <div class="invalid-feedback">Please fill out this field.</div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            function httpGetAsync(theUrl, callback)
+                                {
+                                    var xmlHttp = new XMLHttpRequest();
+                                    xmlHttp.onreadystatechange = function() { 
+                                        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+                                            callback(xmlHttp.responseText);
+                                    }
+                                    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+                                    xmlHttp.send(null);
+                                }
+                        </script>
+                        {% bootstrap_button button_type="submit" content="Отримати" %}
+                    </form>
+                    <form method="post" action="/csv">
+                        {% csrf_token %}
+                        <input type="text" id="fieldnames" name="fieldnames" value="{{ fieldnames }}" hidden/>
+                        <input type="text" id="csv_json" name="csv_json" value="{{ csv_response }}" hidden/>
+                        <button type="submit" {% if not csv_button %} hidden {% endif %}>Download .csv</button>
+                    </form>
+                </div>
+                <div class="col">
+                    
+                    <script>
+                        {% comment %} var json = {"hey": "guy","anumber": 243,"anobject": {"whoa": "nuts","anarray": [1,2,"thr<h1>ee"], "more":"stuff"},"awesome": true,"bogus": false,"meaning": null, "japanese":"明日がある。", "link": "http://jsonview.com", "notLink": "http://jsonview.com is great"}; {% endcomment %}
+                        var json = JSON.parse('{{ response_json | escapejs }}')
+
+                        $(function() {
+                            $("#json").JSONView(json);
+                            // with options
+                            $("#json-collasped").JSONView(json, { collapsed: true });
+                        });
+                    </script>
+                    
+                    <div id="json"></div>
+                </div>
+            
+            </div>
+        </div>
+    </body>
+
+</html>
