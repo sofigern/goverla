@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Підключення CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <title>{% block title %}{% endblock %}</title>
+  <style>
+    /* Налаштування заголовка навігаційної панелі */
+    .navbar-brand {
+      font-size: 2rem;
+      font-weight: bold;
+      letter-spacing: 2px;
+      color: #fff;
+      transition: transform 0.3s ease-in-out;
+    }
+    .navbar-brand:hover {
+      transform: scale(1.1);
+    }
+
+    /* Налаштування кнопки "бургер" */
+    .navbar-toggler {
+      border: none;
+      background-color: transparent;
+      outline: none;
+      transition: transform 0.3s ease-in-out;
+    }
+    .navbar-toggler:hover {
+      transform: rotate(180deg);
+    }
+
+    /* Налаштування посилань навігаційного меню */
+    .nav-link {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      color: #fff;
+      transition: color 0.3s ease-in-out;
+    }
+    .nav-link:hover {
+      color: #f8b739;
+    }
+
+    /* Налаштування футера */
+    footer {
+      background-color: #222;
+      color: #fff;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+
+    /* Налаштування стилів таблиці */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #dee2e6;
+    }
+    th {
+      background-color: #007bff;
+      color: #fff;
+    }
+    tr:nth-child(even) {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <!-- Навігаційне меню -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href='/'>Goverla</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#">Посилання 1</a>
+          </li>
+          <li class="nav-item">
+                  <a class="nav-link" href="#">Посилання 2</a>
+      </li>
+    </ul>
+  </div>
+</div>
+  </nav>
+  <!-- Вміст сторінки -->
+  <div class="container">
+    {% block content %}
+    {% endblock %}
+  </div>
+  <!-- Підключення JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

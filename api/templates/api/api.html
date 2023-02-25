@@ -8,8 +8,8 @@
         <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js" integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css" integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        
-        
+
+
         <title>Goverla Example</title>
         <meta charset="utf-8">
     </head>
@@ -49,11 +49,11 @@
                             function httpGetAsync(theUrl, callback)
                                 {
                                     var xmlHttp = new XMLHttpRequest();
-                                    xmlHttp.onreadystatechange = function() { 
+                                    xmlHttp.onreadystatechange = function() {
                                         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
                                             callback(xmlHttp.responseText);
                                     }
-                                    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+                                    xmlHttp.open("GET", theUrl, true); // true for asynchronous
                                     xmlHttp.send(null);
                                 }
                         </script>
@@ -67,7 +67,7 @@
                     </form>
                 </div>
                 <div class="col">
-                    
+
                     <script>
                         {% comment %} var json = {"hey": "guy","anumber": 243,"anobject": {"whoa": "nuts","anarray": [1,2,"thr<h1>ee"], "more":"stuff"},"awesome": true,"bogus": false,"meaning": null, "japanese":"明日がある。", "link": "http://jsonview.com", "notLink": "http://jsonview.com is great"}; {% endcomment %}
                         var json = JSON.parse('{{ response_json | escapejs }}')
@@ -78,12 +78,13 @@
                             $("#json-collasped").JSONView(json, { collapsed: true });
                         });
                     </script>
-                    
+
                     <div id="json"></div>
                 </div>
-            
+
             </div>
         </div>
     </body>
 
 </html>
+
