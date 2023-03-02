@@ -9,8 +9,7 @@ urlpatterns = [
     path('api', views.api),
     path('csv', views.post_csv),
     path('', views.goverla),
-    path('goverla', views.goverla),
+    path('transactions/', views.transactions_api),
     path('base', views.base),
     path('lot_form/', views.lot_view, name='lot_form'),
 ]
-

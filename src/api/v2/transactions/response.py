@@ -1,9 +1,9 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Union
 
 
 @dataclass
-class Transactions:
+class TransactionsResponse:
     id: int
     doc_vob: Optional[str]
     doc_vob_name: Optional[str]
@@ -30,7 +30,7 @@ class Transactions:
     payment_type: str
     payment_data: Optional[str]
     source_id: int
-    kekv: Optional[int]
+    kekv: Optional[Union[int, str]]
     kpk: str
     contractId: Optional[str]
     contractNumber: Optional[str]

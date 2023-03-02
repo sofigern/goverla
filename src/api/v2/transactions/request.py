@@ -4,8 +4,8 @@ from typing import List
 
 
 @dataclass
-class TransactionRequest:
+class TransactionsRequest:
 
-    payersID: List[str]  # ЄДРПОУ платника
-    documentDateFrom: date  # Діапазон пошуку за датою документа (дата з, включно)
-    documentDateTo: date  # Діапазон пошуку за датою документа (дата по, включно)
+    payers_edrpous: List[str]  # ЄДРПОУ платника
+    startdate: str  # Діапазон пошуку за датою документа (дата з, включно)
+    enddate: str  # Діапазон пошуку за датою документа (дата по, включно)
