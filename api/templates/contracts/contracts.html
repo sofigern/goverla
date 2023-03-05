@@ -1,33 +1,30 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
 
-<h1>Пошук трансакцій за кодом платника</h1>
-<a href="http://api.spending.gov.ua/api/swagger-ui.html#/Transactions/getPageUsingGET_1">Документація</a>
+<h1>Угоди за ЄДРПОУ розпорядника</h1>
+<a href="http://api.spending.gov.ua/api/swagger-ui.html#/Disposers/getAgreementsUsingGET">Документація</a>
 
 <form method="GET">
     <div class="row">
-
-
         <div class="col">
-            <label for="payers_edrpous">Код платника:</label>
-            <input type="text" id="payers_edrpous" name="payers_edrpous" class="form-control"
-                   value="{{ request_params.payers_edrpous|default:'' }}" placeholder="00035323">
+            <label for="disposerId">ЄДРПОУ розпорядників</label>
+            <input type="text" id="disposerId" name="disposerId" class="form-control"
+                   value="{{ request_params.disposerId|default:'' }}" placeholder="00013480">
         </div>
         <div class="col">
-            <label for="startdate">Дата з:</label>
-            <input type="date" id="startdate" name="startdate" class="form-control"
-                   value="{{ request_params.startdate|default:'' }}">
+            <label for="startDate">Дата з:</label>
+            <input type="date" id="startDate" name="startDate" class="form-control"
+                   value="{{ request_params.startDate|default:'' }}">
         </div>
         <div class="col">
-            <label for="enddate">Дата по:</label>
-            <input type="date" id="enddate" name="enddate" class="form-control"
-                   value="{{ request_params.enddate|default:'' }}">
+            <label for="endDate">Дата по:</label>
+            <input type="date" id="endDate" name="endDate" class="form-control"
+                   value="{{ request_params.endDate|default:'' }}">
         </div>
     </div>
     <button class="btn btn-primary btn-lg btn-block mt-3" type="submit">Шукати</button>
 </form>
-
 
 {% if error_message %}
 <div class="alert alert-danger" role="alert">
@@ -43,6 +40,7 @@
         Download .csv
     </button>
 </form>
+
 <div class="col">
     <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js"
@@ -64,4 +62,3 @@
 </div>
 
 {% endblock %}
-

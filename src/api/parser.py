@@ -17,6 +17,7 @@ class Parser:
 
         return result
 
+
 class Parser_Transactions:
 
     def __init__(self, api: ApiEndpoint) -> None:
