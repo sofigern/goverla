@@ -25,7 +25,7 @@ from src.api.v2.check_documents.lotForm import LotForm
 
 
 def index(request):
-    return render(request, 'api/index.html')
+    return render(request, 'index.html')
 
 
 def api(request):
@@ -63,7 +63,7 @@ def api(request):
 
     return render(
         request,
-        'api/api.html',
+        'contracts/contracts.html',
         context,
     )
 
