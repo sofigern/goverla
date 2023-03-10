@@ -1,4 +1,5 @@
 from dataclasses import asdict
+from copy import deepcopy
 
 import requests
 
@@ -11,8 +12,13 @@ class Fetcher:
         self.api = api
 
     def get(self, request):
+        url = deepcopy(self.api.url)
         http_response = requests.get(
-            self.api.url.add(asdict(request)).url
+            url.add(asdict(request)).url
         )
 
         return http_response
+
+    def get_url(self, request):
+        url = deepcopy(self.api.url)
+        return url.add(asdict(request)).url

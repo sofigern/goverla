@@ -5,22 +5,22 @@
 <h1>Угоди за ЄДРПОУ розпорядника</h1>
 <a href="http://api.spending.gov.ua/api/swagger-ui.html#/Disposers/getAgreementsUsingGET">Документація</a>
 
-<form method="GET">
+<form method="GET" id="main-form">
     <div class="row">
         <div class="col">
             <label for="disposerId">ЄДРПОУ розпорядників</label>
             <input type="text" id="disposerId" name="disposerId" class="form-control"
-                   value="{{ request_params.disposerId|default:'' }}" placeholder="00013480">
+                   value="{{ request_params.disposerid|default:'' }}" placeholder="00013480">
         </div>
         <div class="col">
             <label for="startDate">Дата з:</label>
             <input type="date" id="startDate" name="startDate" class="form-control"
-                   value="{{ request_params.startDate|default:'' }}">
+                   value="{{ request_params.startdate|default:'' }}">
         </div>
         <div class="col">
             <label for="endDate">Дата по:</label>
             <input type="date" id="endDate" name="endDate" class="form-control"
-                   value="{{ request_params.endDate|default:'' }}">
+                   value="{{ request_params.enddate|default:'' }}">
         </div>
     </div>
     <button class="btn btn-primary btn-lg btn-block mt-3" type="submit">Шукати</button>
@@ -31,34 +31,5 @@
     {{ error_message }}
 </div>
 {% endif %}
-
-<form method="post" action="/csv">
-    {% csrf_token %}
-    <input type="text" id="fieldnames" name="fieldnames" value="{{ fieldnames }}" hidden/>
-    <input type="text" id="csv_json" name="csv_json" value="{{ csv_response }}" hidden/>
-    <button class="btn btn-primary btn-m btn-block mt-2" type="submit" {% if not csv_button %} hidden {% endif %}>
-        Download .csv
-    </button>
-</form>
-
-<div class="col">
-    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js"
-            integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg=="
-            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css"
-          integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <script>
-        var json = JSON.parse('{{ response_json | escapejs }}')
-
-        $(function() {
-            $("#json").JSONView(json);
-            // with options
-            $("#json-collasped").JSONView(json, { collapsed: true });
-        });
-    </script>
-    <div id="json"></div>
-</div>
 
 {% endblock %}

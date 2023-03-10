@@ -1,10 +1,10 @@
-from dataclasses import dataclass
-from typing import Optional, Any, List
-from src.api.v2.disposers.contracts.mapper import Transformation
+from src.api.v2.mapper import Transformation, Mapper
 
 
-class TransactionsMapper:
+class TransactionsMapper(Mapper):
 
+    _path = 'transactions'
+    # Do we want None string for none values?
     _map = {
         'id': Transformation(),
         'trans_date': Transformation(),
@@ -23,24 +23,3 @@ class TransactionsMapper:
         'contractNumber': Transformation(),
         'budgetCode': Transformation(),
     }
-
-    @classmethod
-    def transform(cls, data):
-        extract = {}
-        for path, transformation in cls._map.items():
-            value = getattr(data, path, transformation.default)
-            name = transformation.name
-            if not name:
-                name = path.split('.')[-1]
-            extract[name] = value
-        return extract
-
-    @classmethod
-    def fieldnames(cls) -> List[str]:
-        fieldnames = []
-        for path, transformation in cls._map.items():
-            name = transformation.name
-            if not name:
-                name = path.split('.')[-1]
-            fieldnames.append(name)
-        return fieldnames
