@@ -175,3 +175,9 @@ def transactions_api(request):
         context,
 
     )
+
+# вьюшка для помилки 500
+
+
+def my_custom_error500_view(request, exception):
+    return render(request, '500.html', status=500)
