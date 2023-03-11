@@ -91,6 +91,47 @@
       background-color: #f8f9fa;
     }
   </style>
+
+  {% csrf_token %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var mapper_path = "{{ mapper_path }}";
+
+        function onLoad(urls) {
+          const promises = urls.map(url => fetch(url).then(response => response.json()));
+          
+          Promise.all(promises).then(results => {
+            const results_list = [].concat(...results);
+
+            const json_response = results_list.reduce((acc, cur) => {
+              if (mapper_path.length > 0) {
+                return acc.concat(cur[mapper_path]);
+              } else {
+                return acc.concat(cur);
+              }
+            }, []);
+
+            document.getElementById('csv-post-form').response_json.value = JSON.stringify(json_response);
+            document.querySelector('#csv-post-form button[type="submit"]').hidden = false;
+            
+            $(function() {
+                $("#json-view").JSONView(json_response);
+                // with options
+                $("#json-view-collasped").JSONView(json_response, { collapsed: true });
+            });
+          }).catch(error => {
+            console.error(error); // handle error
+          });
+        }
+        
+        {% if request_urls %}
+          function makeRequest() {
+              onLoad(JSON.parse('{{ request_urls|escapejs }}'));
+          }
+          window.onload = makeRequest;
+        {% endif %}
+    </script>
+
 </head>
 <body>
   <!-- Навігаційне меню -->
@@ -116,6 +157,17 @@
   <div class="container">
     {% block content %}
     {% endblock %}
+    <form method="post" action="/csv" id="csv-post-form">
+        <input type="text" id="mapper-type" name="mapper_type" value="{{ mapper_type }}" hidden/>
+        <input type="text" id="response-json" name="response_json" hidden/>
+        <button class="btn btn-primary btn-m btn-block mt-2" type="submit" hidden>
+            Download .csv
+        </button>
+    </form>
+    
+    <div class="col">
+        <div id="json-view"></div>
+    </div>
   </div>
 
  <!-- <footer class="bg-dark">
@@ -126,9 +178,7 @@
 
   <!-- Підключення JavaScript -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.slim.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js" integrity="sha512-ff/E/8AEnLDXnTCyIa+l80evPRNH8q5XnPGY/NgBL645jzHL1ksmXonVMDt7e5D34Y4DTOv+P+9Rmo9jBSSyIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css" integrity="sha512-aM9sVC1lVWwuuq38iKbFdk04uGgRyr7ERRnO990jReifKRrYGLugrpLCj27Bfejv6YnAFW2iN3sm6x/jbW7YBg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 

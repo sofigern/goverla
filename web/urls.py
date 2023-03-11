@@ -7,7 +7,7 @@ import api.views as views
 urlpatterns = [
     # path('admin/', admin.site.urls),
     path('admin/', views.index),
-    path('api', views.api),
+    path('contracts/', views.contracts_api),
     path('csv', views.post_csv),
     path('', views.goverla),
     path('transactions/', views.transactions_api),

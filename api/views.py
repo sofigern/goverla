@@ -1,8 +1,6 @@
 import csv
-from dataclasses import asdict
 import ujson
-from django.http import HttpResponse, JsonResponse
-from django.views.decorators.http import require_GET
+from django.http import HttpResponse
 
 from furl import furl
 from django.shortcuts import render
@@ -13,7 +11,6 @@ from src.api.parser import Parser
 from src.api.v2.disposers.contracts.mapper import ContractMapper
 from src.api.v2.disposers.contracts.request import ContractRequest
 from src.api.v2.disposers.contracts.response import ContractResponse
-from src.api.parser import Parser_Transactions
 
 from src.api.v2.transactions.mapper import TransactionsMapper
 from src.api.v2.transactions.request import TransactionsRequest
@@ -28,9 +25,8 @@ def index(request):
     return render(request, 'index.html')
 
 
-def api(request):
+def contracts_api(request):
     request_params = {}
-    response_json = ''
     context = {}
 
     for key in request.GET:
@@ -46,7 +42,6 @@ def api(request):
         )
 
         fetcher = Fetcher(api=api)
-        parser = Parser(api=api)
 
         http_request = ContractRequest(
             disposerId=request_params['disposerid'],
@@ -54,12 +49,10 @@ def api(request):
             documentDateTo=request_params['enddate'],
         )
 
-        http_response = fetcher.get(http_request)
-        response = parser.parse(http_response)
-        context['response_json'] = ujson.dumps([asdict(r) for r in response])
-        context['csv_button'] = True
-        context['fieldnames'] = ujson.dumps(ContractMapper.fieldnames())
-        context['csv_response'] = ujson.dumps([ContractMapper.transform(item) for item in response])
+        context['request_urls'] = ujson.dumps([fetcher.get_url(http_request)])
+        context['mapper_type'] = 'contracts'
+        context['mapper_path'] = 'documents'
+        
 
     return render(
         request,
@@ -67,16 +60,21 @@ def api(request):
         context,
     )
 
+MAPPER_BY_TYPE = {
+    'contracts': ContractMapper,
+    'transactions': TransactionsMapper,
+}
 
 def post_csv(request):
+    mapper_type = request.POST['mapper_type']
     response = HttpResponse(
         content_type='text/csv',
-        headers={'Content-Disposition': 'attachment; filename="somefilename.csv"'},
+        headers={'Content-Disposition': f'attachment; filename="{mapper_type}.csv"'},
     )
-
-    fieldnames = ujson.loads(request.POST['fieldnames'])
-    extracted_responses = ujson.loads(request.POST['csv_json'])
-
+    mapper = MAPPER_BY_TYPE[mapper_type]
+    fieldnames = mapper.fieldnames()
+    responses = ujson.loads(request.POST['response_json'])
+    extracted_responses = [mapper.transform(item) for item in responses]
     writer = csv.DictWriter(response, delimiter=';', fieldnames=fieldnames)
     writer.writeheader()
     writer.writerows(extracted_responses)
@@ -114,7 +112,7 @@ def lot_view(request):
 
 def transactions_api(request):
     request_params = {}
-    response_json = ''
+    # response_json = ''
     context = {}
 
     for key in request.GET:
@@ -144,31 +142,28 @@ def transactions_api(request):
             queries = [request_params]
 
         # Опрацьовуємо запити
-        results = []
+        # results = []
+        context['request_urls'] = []
         for query in queries:
             api_transactions = ApiEndpoint(
-                url=furl('https://api.spending.gov.ua/api/v2/api/transactions/page/'),
+                url=furl('https://api.spending.gov.ua/api/v2/api/transactions/'),
                 request_type=TransactionsRequest,
                 response_type=TransactionsResponse,
             )
 
             fetcher = Fetcher(api=api_transactions)
-            parser = Parser_Transactions(api=api_transactions)
+            # parser = Parser_Transactions(api=api_transactions)
 
             http_request = TransactionsRequest(
                 payers_edrpous=query['payers_edrpous'],
                 startdate=query['startdate'],
                 enddate=query['enddate'],
             )
-
-            http_response = fetcher.get(http_request)
-            response = parser.parse(http_response)
-            results += response
-        context['response_json'] = ujson.dumps([asdict(r) for r in results])
-        context['csv_button'] = True
-        context['fieldnames'] = ujson.dumps(TransactionsMapper.fieldnames())
-        context['csv_response'] = ujson.dumps([TransactionsMapper.transform(item) for item in results])
-
+            fetcher.get_url(http_request)
+            context['request_urls'].append(fetcher.get_url(http_request))
+        context['request_urls'] = ujson.dumps(context['request_urls'])
+        context['mapper_type'] = 'transactions'
+        context['mapper_path'] = ''
     return render(
         request,
         'transactions/transactions.html',
