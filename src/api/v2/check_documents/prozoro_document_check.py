@@ -1,16 +1,19 @@
-import requests
+import aiohttp
 
-def find_matching_documents(lot_id):
+
+async def find_matching_documents(lot_id):
     matching_docs = []
-
+    bids = []
     api_url = f"https://public.api.openprocurement.org/api/2.3/tenders/{lot_id}"
-    response = requests.get(api_url)
-    if response.status_code != 200:
-        print(f"Помилка при запиті до API: {response.status_code}")
-        return matching_docs
+    
+    async with aiohttp.ClientSession() as session:
+        async with session.get(api_url) as response:
+            if response.status != 200:
+                print(f"Помилка при запиті до API: {response.status}")
+                return matching_docs
 
-    lot_data = response.json()["data"]
-    bids = lot_data["bids"]
+            lot_data = (await response.json())["data"]
+            bids = lot_data["bids"]
 
     for i, first_bid in enumerate(bids):
         for second_bid in bids[i + 1:]:
@@ -30,4 +33,5 @@ def find_matching_documents(lot_id):
                         }
                         if matching_doc not in matching_docs:
                             matching_docs.append(matching_doc)
+    # print(matching_docs)
     return matching_docs

@@ -1,4 +1,6 @@
+import asyncio
 import csv
+from itertools import chain
 import ujson
 from django.http import HttpResponse
 
@@ -7,7 +9,6 @@ from django.shortcuts import render
 
 from src.api.endpoint import ApiEndpoint
 from src.api.fetcher import Fetcher
-from src.api.parser import Parser
 from src.api.v2.disposers.contracts.mapper import ContractMapper
 from src.api.v2.disposers.contracts.request import ContractRequest
 from src.api.v2.disposers.contracts.response import ContractResponse
@@ -92,20 +93,21 @@ def base(request):
 
 # вьюшки для перевірки документів Prozoro
 
-def lot_view(request):
+async def lot_view(request):
     matching_docs = []
     if request.method == 'POST':
         form = LotForm(request.POST)
         if form.is_valid():
-            lot_ids = form.cleaned_data['lot_id'].split(',')
-            for lot_id in lot_ids:
-                matching_docs.extend(find_matching_documents(lot_id.strip()))
+            matching_docs = list(chain(*(await asyncio.gather(
+                *[
+                    find_matching_documents(lot_id.strip()) 
+                    for lot_id in form.cleaned_data['lot_id'].split(',')
+                ]
+            ))))
     else:
         form = LotForm()
     context = {'form': form, 'matching_docs': matching_docs}
-    return render(request,
-                  'doc_check/lot_form.html',
-                  context)
+    return render(request, 'doc_check/lot_form.html', context)
 
 
 # вьюшка для трансакції з апі spending.gov.ua
