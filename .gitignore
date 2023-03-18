@@ -140,7 +140,6 @@ GitHub.sublime-settings
 # Goverla current ignores
 goverla.yaml
 goverla.iml
-Dockerfile
 docker-compose-deploy.yml
 docker-compose.yml
 .gcloudignore
