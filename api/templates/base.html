@@ -158,6 +158,7 @@
     {% block content %}
     {% endblock %}
     <form method="post" action="/csv" id="csv-post-form">
+        {% csrf_token %}
         <input type="text" id="mapper-type" name="mapper_type" value="{{ mapper_type }}" hidden/>
         <input type="text" id="response-json" name="response_json" hidden/>
         <button class="btn btn-primary btn-m btn-block mt-2" type="submit" hidden>
