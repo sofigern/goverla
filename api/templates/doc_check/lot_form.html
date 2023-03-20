@@ -8,7 +8,7 @@
             <form method="post">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <button type="submit" class="btn btn-primary mt-3">Перевірити</button>
+                <button type="submit" class="btn btn-primary mt-3" id="search-button">Перевірити</button>
             </form>
         </div>
     </div>
@@ -24,6 +24,7 @@
                     <th>Другий учасник</th>
                     <th>Посилання на тендер</th>
                     <th>Посилання на документ</th>
+                    <th>Tендер</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,7 @@
                     <td>{{ doc.bid_2_name }}</td>
                     <td><a href="{{ doc.lot_id }}" target="_blank">Тендер</a></td>
                     <td><a href="{{ doc.doc_url }}" target="_blank">Документ</a></td>
+                    <td>{{ doc.tender }}</td>
 
                 </tr>
                 {% endfor %}
@@ -44,4 +46,12 @@
     </div>
     {% endif %}
 </div>
+<script>
+$(document).ready(function() {
+    $('#search-button').click(function() {
+        // Додайте анімацію покращення відображення
+        $('#search-button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Завантаження...').addClass('disabled');
+    });
+});
+</script>
 {% endblock %}

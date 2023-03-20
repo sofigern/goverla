@@ -7,8 +7,6 @@
 
 <form method="GET" id="main-form">
     <div class="row">
-
-
         <div class="col">
             <label for="payers_edrpous">Код платника:</label>
             <input type="text" id="payers_edrpous" name="payers_edrpous" class="form-control"
@@ -25,9 +23,17 @@
                    value="{{ request_params.enddate|default:'' }}">
         </div>
     </div>
-    <button class="btn btn-primary btn-lg btn-block mt-3" type="submit">Шукати</button>
+    <button class="btn btn-primary btn-lg btn-block mt-3" type="submit" id="search-button">Шукати</button>
 </form>
 
+<script>
+$(document).ready(function() {
+    $('#search-button').click(function() {
+        // Додайте анімацію покращення відображення
+        $('#search-button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Завантаження...').addClass('disabled');
+    });
+});
+</script>
 
 {% if error_message %}
 <div class="alert alert-danger" role="alert">
@@ -36,4 +42,3 @@
 {% endif %}
 
 {% endblock %}
-
