@@ -48,7 +48,7 @@ elif os.getenv("TRAMPOLINE_CI", None):
 # [END_EXCLUDE]
 elif os.environ.get("GOOGLE_CLOUD_PROJECT", None):
     # Pull secrets from Secret Manager
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT")
+    project_id = os.environ.get("PROJECT_ID")
 
     client = secretmanager.SecretManagerServiceClient()
     settings_name = os.environ.get("SETTINGS_NAME", "django_settings")
