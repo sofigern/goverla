@@ -78,12 +78,12 @@ if CLOUDRUN_SERVICE_URL:
     ALLOWED_HOSTS = ['*']
     # ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
     # CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
-    CSRF_TRUSTED_ORIGINS = [
-        'https://goverla.org',
-        'https://www.goverla.org',
-    ]
-    SECURE_SSL_REDIRECT = True
-    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    # CSRF_TRUSTED_ORIGINS = [
+        # 'https://goverla.org',
+        # 'https://www.goverla.org',
+    # ]
+    # SECURE_SSL_REDIRECT = True
+    # SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 else:
     ALLOWED_HOSTS = ["*"]
 # [END cloudrun_django_csrf]
