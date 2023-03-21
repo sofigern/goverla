@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="display-4"></h1>
+    <p class="lead">Вітаю на Говерлі, порталі доступу до відкритих даних. На даний момент доступним є пошук по платежах та договорах з порталу відкритих фінансів. Якщо бажаєте допомогти розвитку проєкту – донатьте на ЗСУ.</p>
+    <hr class="my-4">
+    <p>Оберіть сервіс, до якого ви бажаєте перейти:</p>
+    <div class="row">
+      <div class="col">
+        <a class="btn btn-primary btn-lg btn-block m-2" href="contracts/">Перейти до сервісу вивантаження договорів</a>
+      </div>
+      <div class="col">
+        <a class="btn btn-primary btn-lg btn-block m-2" href="transactions/">Перейти до сервісу вивантаження платежів</a>
+      </div>
+      <div class="col">
+        <a class="btn btn-primary btn-lg btn-block m-2" href="lot_form/">Перейти до перевірки документів Прозорро</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}

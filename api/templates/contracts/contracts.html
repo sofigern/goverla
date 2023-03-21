@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Угоди за ЄДРПОУ розпорядника</h1>
+<a href="http://api.spending.gov.ua/api/swagger-ui.html#/Disposers/getAgreementsUsingGET">Документація</a>
+
+<form method="GET" id="main-form">
+    <div class="row">
+        <div class="col">
+            <label for="disposerId">ЄДРПОУ розпорядників</label>
+            <input type="text" id="disposerId" name="disposerId" class="form-control"
+                   value="{{ request_params.disposerid|default:'' }}" placeholder="00013480">
+        </div>
+        <div class="col">
+            <label for="startDate">Дата з:</label>
+            <input type="date" id="startDate" name="startDate" class="form-control"
+                   value="{{ request_params.startdate|default:'' }}">
+        </div>
+        <div class="col">
+            <label for="endDate">Дата по:</label>
+            <input type="date" id="endDate" name="endDate" class="form-control"
+                   value="{{ request_params.enddate|default:'' }}">
+        </div>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block mt-3" type="submit">Шукати</button>
+</form>
+
+{% if error_message %}
+<div class="alert alert-danger" role="alert">
+    {{ error_message }}
+</div>
+{% endif %}
+
+{% endblock %}

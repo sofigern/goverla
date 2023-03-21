@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Пошук трансакцій за кодом платника</h1>
+<a href="http://api.spending.gov.ua/api/swagger-ui.html#/Transactions/getPageUsingGET_1">Документація</a>
+
+<form method="GET" id="main-form">
+    <div class="row">
+        <div class="col">
+            <label for="payers_edrpous">Код платника:</label>
+            <input type="text" id="payers_edrpous" name="payers_edrpous" class="form-control"
+                   value="{{ request_params.payers_edrpous|default:'' }}" placeholder="00035323">
+        </div>
+        <div class="col">
+            <label for="startdate">Дата з:</label>
+            <input type="date" id="startdate" name="startdate" class="form-control"
+                   value="{{ request_params.startdate|default:'' }}">
+        </div>
+        <div class="col">
+            <label for="enddate">Дата по:</label>
+            <input type="date" id="enddate" name="enddate" class="form-control"
+                   value="{{ request_params.enddate|default:'' }}">
+        </div>
+    </div>
+    <button class="btn btn-primary btn-lg btn-block mt-3" type="submit" id="search-button">Шукати</button>
+</form>
+
+<script>
+$(document).ready(function() {
+    $('#search-button').click(function() {
+        // Додайте анімацію покращення відображення
+        $('#search-button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Завантаження...').addClass('disabled');
+    });
+});
+</script>
+
+{% if error_message %}
+<div class="alert alert-danger" role="alert">
+    {{ error_message }}
+</div>
+{% endif %}
+
+{% endblock %}

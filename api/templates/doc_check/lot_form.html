@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Перевірка документів тендера</h2>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary mt-3" id="search-button">Перевірити</button>
+            </form>
+        </div>
+    </div>
+    {% if matching_docs %}
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h2>Співпадіння документів:</h2>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Документ, що співпав</th>
+                    <th>Перший учасник</th>
+                    <th>Другий учасник</th>
+                    <th>Посилання на тендер</th>
+                    <th>Посилання на документ</th>
+                    <th>Tендер</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for doc in matching_docs %}
+                <tr>
+
+                    <td>{{ doc.title }}</td>
+                    <td>{{ doc.bid_1_name }}</td>
+                    <td>{{ doc.bid_2_name }}</td>
+                    <td><a href="{{ doc.lot_id }}" target="_blank">Тендер</a></td>
+                    <td><a href="{{ doc.doc_url }}" target="_blank">Документ</a></td>
+                    <td>{{ doc.tender }}</td>
+
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% endif %}
+</div>
+<script>
+$(document).ready(function() {
+    $('#search-button').click(function() {
+        // Додайте анімацію покращення відображення
+        $('#search-button').html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Завантаження...').addClass('disabled');
+    });
+});
+</script>
+{% endblock %}
