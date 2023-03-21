@@ -75,9 +75,13 @@ DEBUG = env("DEBUG")
 # to Cloud Run. This code takes the URL and converts it to both these settings formats.
 CLOUDRUN_SERVICE_URL = env("CLOUDRUN_SERVICE_URL", default=None)
 if CLOUDRUN_SERVICE_URL:
-    ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
+    ALLOWED_HOSTS = ['*']
+    # ALLOWED_HOSTS = [urlparse(CLOUDRUN_SERVICE_URL).netloc]
     # CSRF_TRUSTED_ORIGINS = [CLOUDRUN_SERVICE_URL]
-    CSRF_TRUSTED_ORIGINS = ['*']
+    CSRF_TRUSTED_ORIGINS = [
+        'https://goverla.org',
+        'https://www.goverla.org',
+    ]
     SECURE_SSL_REDIRECT = True
     SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 else:
